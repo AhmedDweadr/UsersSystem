@@ -3,22 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_app/Fetures/Content/Presentarion/ContentCubit.dart';
 import 'package:my_app/core/themes/themes.dart';
 
-// ignore: must_be_immutable
-class UpdateContentPage extends StatefulWidget {
-  UpdateContentPage({
-    super.key,
-    required this.content,
-    required this.Contentid,
-  });
+class Addcontent extends StatefulWidget {
+  Addcontent({super.key, required this.user_id});
 
-  final String content;
-  final int Contentid;
-
+  final String user_id;
   @override
-  State<UpdateContentPage> createState() => _UpdateContentPageState();
+  State<Addcontent> createState() => _UpdateContentPageState();
 }
 
-class _UpdateContentPageState extends State<UpdateContentPage> {
+class _UpdateContentPageState extends State<Addcontent> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController contentController;
 
@@ -26,7 +19,7 @@ class _UpdateContentPageState extends State<UpdateContentPage> {
   void initState() {
     super.initState();
     // نعبي الـ controller بالمحتوى الحالي
-    contentController = TextEditingController(text: widget.content);
+    contentController = TextEditingController();
   }
 
   @override
@@ -39,7 +32,7 @@ class _UpdateContentPageState extends State<UpdateContentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("تحديث الملاحظات"),
+        title: const Text("اضافه الملاحظات"),
         centerTitle: true,
         backgroundColor: Themes.mainColor,
       ),
@@ -71,21 +64,17 @@ class _UpdateContentPageState extends State<UpdateContentPage> {
                 ),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    await context.read<ContentCubit>().updateContent(
-                      widget.Contentid,
+                    await context.read<ContentCubit>().AddContent(
                       contentController.text,
+                      widget.user_id,
                     );
-
+                    // نرجع المحتوى الجديد للصفحة السابقة
                     if (context.mounted) {
                       Navigator.pop(context, true);
                     }
-                  
                   }
                 },
-                child: const Text(
-                  "حفظ التحديث",
-                  style: TextStyle(fontSize: 16),
-                ),
+                child: const Text("حفظ", style: TextStyle(fontSize: 16)),
               ),
             ],
           ),
